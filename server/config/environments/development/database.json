@@ -1,0 +1,20 @@
+{
+  "defaultConnection": "default",
+  "connections": {
+    "default": {
+      "connector": "strapi-hook-mongoose",
+      "settings": {
+        "client": "mongo",
+        "host": "@tobasaecom0-ic9jx.mongodb.net",
+        "port": 27017,
+        "database": "tobasa-ecom",
+        "username": "tobasaadmin",
+        "password": "T0b4s44dm1n",
+        "srv": true
+      },
+      "options": {
+        "ssl": true
+      }
+    }
+  }
+}

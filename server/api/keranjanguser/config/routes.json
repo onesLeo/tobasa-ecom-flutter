@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/keranjangusers",
+      "handler": "Keranjanguser.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/keranjangusers/count",
+      "handler": "Keranjanguser.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/keranjangusers/:_id",
+      "handler": "Keranjanguser.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/keranjangusers",
+      "handler": "Keranjanguser.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/keranjangusers/:_id",
+      "handler": "Keranjanguser.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/keranjangusers/:_id",
+      "handler": "Keranjanguser.destroy",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

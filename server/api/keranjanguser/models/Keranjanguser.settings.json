@@ -1,0 +1,18 @@
+{
+  "connection": "default",
+  "collectionName": "",
+  "info": {
+    "name": "keranjanguser",
+    "description": ""
+  },
+  "options": {
+    "timestamps": true
+  },
+  "attributes": {
+    "produk": {
+      "collection": "produk",
+      "via": "keranjangusers",
+      "dominant": true
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "connection": "default",
+  "collectionName": "produk",
+  "info": {
+    "name": "produk",
+    "description": "api to show all products"
+  },
+  "options": {
+    "timestamps": true
+  },
+  "attributes": {
+    "nama-produk": {
+      "type": "string"
+    },
+    "harga-produk": {
+      "type": "biginteger"
+    },
+    "deskripsi-produk": {
+      "type": "text"
+    },
+    "gambar": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload"
+    },
+    "user": {
+      "model": "user",
+      "via": "produk",
+      "plugin": "users-permissions"
+    },
+    "ukuran": {
+      "type": "string"
+    },
+    "keranjangusers": {
+      "collection": "keranjanguser",
+      "via": "produk"
+    }
+  }
+}
