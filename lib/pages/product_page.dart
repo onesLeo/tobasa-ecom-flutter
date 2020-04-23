@@ -39,7 +39,7 @@ class ProductPageState extends State<ProductPage> {
                 : FlatButton(
                     child: Text(
                       'Daftar',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     onPressed: () =>
                         Navigator.pushNamed(context, '/registrasi'),

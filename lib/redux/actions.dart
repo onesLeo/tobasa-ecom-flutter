@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_app/models/app_state.dart';
 import 'package:flutter_app/models/produk.dart';
 import 'package:flutter_app/users/user.dart';
@@ -92,6 +93,23 @@ ThunkAction<AppState> getKeranjangAction = (Store<AppState> store) async{
 
 };
 
+
+
+ThunkAction<AppState> getProdukActionFireBaseDB = (Store<AppState> store) async{
+    final FirebaseDatabase _firebaseDatabase = FirebaseDatabase.instance;
+    final DatabaseReference _databaseReference = _firebaseDatabase.reference();
+    Future<DataSnapshot> _result = _databaseReference.child('produk').once();
+    List<Produk> listOfResults = [];
+    _result.then((value) {
+      List<dynamic> listValue = value.value;
+      listValue.forEach((element) {
+        Produk produk = Produk.fromJsonFirebase(element);
+        print('Produk nama ${produk.namaProduk}');
+        listOfResults.add(produk);
+      });
+    } );
+    store.dispatch(GetProdukAction(listOfResults));
+};
 
 class GetUserAction{
   final User _user;

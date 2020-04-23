@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:logging/logging.dart';
 
 class Registrasi extends StatefulWidget{
   @override
@@ -9,6 +11,7 @@ class Registrasi extends StatefulWidget{
 }
 
 class RegistrasiState extends State<Registrasi>{
+  final Logger log = Logger('RegistrasiState');
   bool _isSubmitting, _obsecureText = true;
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -109,7 +112,8 @@ class RegistrasiState extends State<Registrasi>{
         print('Form Valid and perform Save');
 //        print('UR DATA - '+ _usernameVal +" - "+_passwordVal+" - "+_emailVal);
         _formState.save();
-        _registerUserToStrapi();
+//        _registerUserToStrapi();
+        _registerUserEmailAndPasswordFirebaseAuth();
       }else{
         print('Form Input Tidak Valid');
       }
@@ -152,6 +156,21 @@ class RegistrasiState extends State<Registrasi>{
 
       _showErrorResponse(messageError);
     }
+  }
+
+  void _registerUserEmailAndPasswordFirebaseAuth(){
+    final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    UserUpdateInfo userUpdateInfo = new UserUpdateInfo();
+    userUpdateInfo.displayName = _usernameVal;
+    Future<AuthResult> authResult = firebaseAuth.createUserWithEmailAndPassword(email: _emailVal, password: _passwordVal);
+    authResult.then((value) {
+      value.user.updateProfile(userUpdateInfo);
+      _showSuccessFulStatus();
+      _redirectUserToProductPage();
+      log.info('User ${_usernameVal} is successfully created');
+    } ).catchError((onError){
+        log.info('Error Happened while trying to update profile ');
+    });
   }
 
   void _storeUserData(responseData) async{

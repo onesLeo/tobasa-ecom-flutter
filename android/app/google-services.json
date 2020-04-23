@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "99708665910",
+    "firebase_url": "https://ecommerceandroid-aecec.firebaseio.com",
+    "project_id": "ecommerceandroid-aecec",
+    "storage_bucket": "ecommerceandroid-aecec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:99708665910:android:c2321db99d73bc605f1897",
+        "android_client_info": {
+          "package_name": "com.flutter.ecommerce.tobasa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "99708665910-htu1esdnfbu7fp6qj6lrihtgdrki079h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnvPkmnAnW48LU127f3npns_7qylsIhIE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "99708665910-htu1esdnfbu7fp6qj6lrihtgdrki079h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

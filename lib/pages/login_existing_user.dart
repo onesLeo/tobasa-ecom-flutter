@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class LoginExistingUser extends StatefulWidget{
 
@@ -82,7 +84,7 @@ class LoginExistingUserState extends State<LoginExistingUser>{
           ),
           FlatButton(
             child: Text(
-                'New User? Register'
+                'User Baru? Daftar disini!'
             ),
             onPressed: () => Navigator.pushReplacementNamed(context, '/registrasi'),
           )
@@ -96,7 +98,8 @@ class LoginExistingUserState extends State<LoginExistingUser>{
     if(_formState.validate()){
       print('Form Valid and perform Save');
       _formState.save();
-      _checkUserToStrapi();
+//      _checkUserToStrapi();
+      _authenticationUserUsingFirebase();
     }else{
       print('Form Input Tidak Valid');
     }
@@ -140,6 +143,23 @@ class LoginExistingUserState extends State<LoginExistingUser>{
 
       _showErrorResponse(messageError);
     }
+  }
+
+  void _authenticationUserUsingFirebase() async {
+    final FirebaseAuth _authentication = FirebaseAuth.instance;
+    Future<AuthResult> _resultAuth = _authentication.signInWithEmailAndPassword(email: _emailVal, password: _passwordVal);
+    _resultAuth.then((value)
+        {
+          print('Your User id found -> ${value.user.uid}');
+          value.user.getIdToken().then((value) => print('TOKEN VALUE ${value.token}'));
+          _showSuccessFulStatus();
+          _redirectUserToProductPage();
+        },
+        onError: (e){
+      throw ' Error happened while login on method _authenticationUserUsingFirebase() > ${e}';
+    }).catchError((e){
+      print('Error caught -> ${e.error}');
+    });
   }
 
   void _storeUserData(responseData) async{
