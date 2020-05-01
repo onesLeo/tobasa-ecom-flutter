@@ -31,9 +31,9 @@ class Produk{
     );
   }
 
-  factory Produk.fromJsonFirebase(Map<dynamic, dynamic> json){
+  factory Produk.fromJsonFirebase(Map<dynamic, dynamic> json, String idDocument){
     return Produk(
-      id: json['id'],
+      id: idDocument,
       namaProduk: json['nama-produk'],
       hargaProduk: json['harga-produk'],
       deskripsiProduk: json['deskripsi-produk'],

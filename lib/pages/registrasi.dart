@@ -1,5 +1,10 @@
+import 'dart:developer';
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/UserEcom.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -158,25 +163,52 @@ class RegistrasiState extends State<Registrasi>{
     }
   }
 
-  void _registerUserEmailAndPasswordFirebaseAuth(){
+  void _registerUserEmailAndPasswordFirebaseAuth() async{
+    setState(() {
+      _isSubmitting = true;
+    });
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     UserUpdateInfo userUpdateInfo = new UserUpdateInfo();
     userUpdateInfo.displayName = _usernameVal;
     Future<AuthResult> authResult = firebaseAuth.createUserWithEmailAndPassword(email: _emailVal, password: _passwordVal);
-    authResult.then((value) {
-      value.user.updateProfile(userUpdateInfo);
+    authResult.then((value) async {
+      await value.user.updateProfile(userUpdateInfo);
+      await value.user.reload();
+      FirebaseUser currentUser = await firebaseAuth.currentUser();
+      print('Display Name is Present? ${currentUser.displayName}');
+      _saveUserInformationToDB(currentUser);
+      _storeUserData(currentUser);
       _showSuccessFulStatus();
       _redirectUserToProductPage();
+      setState(() {
+        _isSubmitting = false;
+      });
       log.info('User ${_usernameVal} is successfully created');
     } ).catchError((onError){
         log.info('Error Happened while trying to update profile ');
     });
   }
 
-  void _storeUserData(responseData) async{
+  void _saveUserInformationToDB(FirebaseUser user){
+    Firestore firestore = Firestore.instance;
+    UserEcom ecomUser = UserEcom(
+      username: user.displayName,
+      email: user.email,
+      nomor_telepon: "",
+      address_user: []
+//      uid: user.uid
+    );
+
+    firestore.collection('user_ecom').document(user.uid).setData(ecomUser.toJson());
+    log.info('User information has been saved to firestore');
+  }
+
+  void _storeUserData(FirebaseUser responseData) async{
     final sharedPref = await SharedPreferences.getInstance();
-    Map<String, dynamic> userMap = responseData['user'];
-    userMap.putIfAbsent('jwt', () => responseData['jwt']);
+    Map<String, dynamic> userMap = new Map<String, dynamic>();
+    userMap.putIfAbsent('username', () => responseData.displayName);
+    userMap.putIfAbsent('email', () => responseData.email);
+    userMap.putIfAbsent('_id', () => responseData.uid);
     sharedPref.setString('user', json.encode(userMap));
   }
 

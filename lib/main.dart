@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         '/' : (BuildContext context) => ProductPage(
           onInit: () {
             StoreProvider.of<AppState>(context).dispatch(getUserAction);
-            StoreProvider.of<AppState>(context).dispatch(getProdukActionFireBaseDB);
+            StoreProvider.of<AppState>(context).dispatch(getProdukActionFireStoreDB);
             StoreProvider.of<AppState>(context).dispatch(getKeranjangAction);
           },
         ),

@@ -4,6 +4,7 @@ import 'package:flutter_app/models/produk.dart';
 import 'package:flutter_app/pages/halaman_produk_detail.dart';
 import 'package:flutter_app/redux/actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ProdukItems extends StatelessWidget{
   final dynamic item;
@@ -17,7 +18,7 @@ class ProdukItems extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    final String pictureUrl = '${item.gambarProdukFirebaseDB}';
+    final String pictureUrl = item.gambarProdukFirebaseDB;
     return InkWell(
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
@@ -30,7 +31,7 @@ class ProdukItems extends StatelessWidget{
       GridTile(
       child: Hero(
         tag: item,
-        child: Image.network(pictureUrl, fit: BoxFit.cover)),
+        child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: pictureUrl, fit: BoxFit.cover,)),
       footer: GridTileBar(
         title: FittedBox(
           fit: BoxFit.scaleDown,

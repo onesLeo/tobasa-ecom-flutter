@@ -152,6 +152,7 @@ class LoginExistingUserState extends State<LoginExistingUser>{
         {
           print('Your User id found -> ${value.user.uid}');
           value.user.getIdToken().then((value) => print('TOKEN VALUE ${value.token}'));
+          _storeUserData(value.user);
           _showSuccessFulStatus();
           _redirectUserToProductPage();
         },
@@ -162,10 +163,12 @@ class LoginExistingUserState extends State<LoginExistingUser>{
     });
   }
 
-  void _storeUserData(responseData) async{
+  void _storeUserData(FirebaseUser responseData) async{
     final sharedPref = await SharedPreferences.getInstance();
-    Map<String, dynamic> userMap = responseData['user'];
-    userMap.putIfAbsent('jwt', () => responseData['jwt']);
+    Map<String, dynamic> userMap = new Map<String, dynamic>();
+    userMap.putIfAbsent('username', () => responseData.displayName);
+    userMap.putIfAbsent('email', () => responseData.email);
+    userMap.putIfAbsent('_id', () => responseData.uid);
     sharedPref.setString('user', json.encode(userMap));
   }
 

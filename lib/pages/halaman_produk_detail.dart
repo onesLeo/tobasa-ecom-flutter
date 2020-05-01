@@ -39,8 +39,8 @@ class HalamanProdukDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String pictureUrl = 'http://127.0.0.1:1337${item
-        .gambarProduk['url']}';
+    final String pictureUrl = '${item
+        .gambarProdukFirebaseDB}';
     final Orientation orientation = MediaQuery
         .of(context)
         .orientation;

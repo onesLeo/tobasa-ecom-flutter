@@ -19,8 +19,8 @@ class User{
       id: json['_id'],
       username: json['username'],
       email: json['email'],
-      keranjangId: json['keranjang_id'],
-      jwt: json['jwt']
+//      keranjangId: json['keranjang_id'],
+//      jwt: json['jwt']
     );
   }
 }
