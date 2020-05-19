@@ -4,8 +4,9 @@ class AddressUser {
     String kecamatan;
     String kode_pos;
     String kota;
+    bool isPrimary;
 
-    AddressUser({this.alamat, this.kabupaten, this.kecamatan, this.kode_pos, this.kota});
+    AddressUser({this.alamat, this.kabupaten, this.kecamatan, this.kode_pos, this.kota, this.isPrimary});
 
     factory AddressUser.fromJson(Map<String, dynamic> json) {
         return AddressUser(
@@ -13,7 +14,8 @@ class AddressUser {
             kabupaten: json['kabupaten'], 
             kecamatan: json['kecamatan'], 
             kode_pos: json['kode_pos'], 
-            kota: json['kota'], 
+            isPrimary: json['is_primary'],
+            kota: json['kota'],
         );
     }
 
@@ -23,6 +25,7 @@ class AddressUser {
         data['kabupaten'] = this.kabupaten;
         data['kecamatan'] = this.kecamatan;
         data['kode_pos'] = this.kode_pos;
+        data['is_primary'] = this.isPrimary;
         data['kota'] = this.kota;
         return data;
     }
