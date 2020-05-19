@@ -7,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/ItemIncart.dart';
 import 'package:flutter_app/models/KeranjangBelanjaModel.dart';
+import 'package:flutter_app/models/UserEcom.dart';
 import 'package:flutter_app/models/UserInf.dart';
 import 'package:flutter_app/models/app_state.dart';
 import 'package:flutter_app/models/produk.dart';
@@ -120,7 +121,15 @@ ThunkAction<AppState> getKeranjangAction = (Store<AppState> store) async{
 
 };
 
-
+ThunkAction<AppState> getUserInformation = (Store<AppState> store) async {
+   Stream<DocumentSnapshot> snapShot = Firestore.instance.collection('user_ecom').document(store.state.user.id).snapshots();
+   UserEcom userInformation;
+   snapShot.forEach((element) {
+     userInformation = UserEcom.fromJson(element.data);
+     print('User Information Object ${userInformation.toJson()}');
+     store.dispatch(GetUserInformation(userInformation));
+   });
+};
 
 ThunkAction<AppState> getProdukActionFireBaseDB = (Store<AppState> store) async{
     final FirebaseDatabase _firebaseDatabase = FirebaseDatabase.instance;
@@ -145,7 +154,6 @@ ThunkAction<AppState> getProdukActionFireStoreDB = (Store<AppState> store) async
     _snapShots.then((value) {
       value.documents.forEach((element) {
         Produk produk = Produk.fromJsonFirebase(element.data, element.documentID);
-        print('Firestore Produk nama ${produk.namaProduk} - Gambar produk > ${produk.gambarProdukFirebaseDB}');
         listOfResults.add(produk);
       });
     });
@@ -192,4 +200,13 @@ class GetKeranjangBelanjaAction{
   List<Produk> get keranjangBelanja => this._listKeranjangBelanja;
 
   GetKeranjangBelanjaAction(this._listKeranjangBelanja);
+}
+
+class GetUserInformation{
+  final UserEcom _userInformation;
+
+  UserEcom get userInformation => this._userInformation;
+
+  GetUserInformation(this._userInformation);
+
 }

@@ -1,3 +1,4 @@
+import 'package:flutter_app/models/UserEcom.dart';
 import 'package:flutter_app/models/app_state.dart';
 import 'package:flutter_app/models/produk.dart';
 import 'package:flutter_app/redux/actions.dart';
@@ -7,7 +8,8 @@ AppState appReducer(AppState state, dynamic action){
   return AppState(
     user: userReducer(state.user, action),
     produk: produkReducer(state.produk, action),
-    keranjangBelanja: keranjangBelanjaReducer(state.keranjangBelanja, action)
+    keranjangBelanja: keranjangBelanjaReducer(state.keranjangBelanja, action),
+    userInformation: userInformationReducer(state.userInformation, action)
   );
 }
 
@@ -19,6 +21,16 @@ User userReducer(User user, dynamic action){
   }
   return user;
 }
+
+UserEcom userInformationReducer(UserEcom userInformation, dynamic action){
+  if(action is GetUserInformation){
+    return action.userInformation;
+  }
+
+  return userInformation;
+}
+
+
 List<Produk> produkReducer(List<Produk> produkList, dynamic action){
   if(action is GetProdukAction){
     return action.produk;

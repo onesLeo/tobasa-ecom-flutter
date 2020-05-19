@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/app_state.dart';
+import 'package:flutter_app/pages/alamat_form.dart';
 import 'package:flutter_app/pages/keranjang_belanja.dart';
 import 'package:flutter_app/pages/login_existing_user.dart';
 import 'package:flutter_app/pages/product_page.dart';
@@ -38,7 +39,12 @@ class MyApp extends StatelessWidget {
           },
         ),
         '/registrasi' : (BuildContext context) => Registrasi(),
-        '/keranjangbelanja' : (BuildContext context) => KeranjangBelanja(),
+        '/keranjangbelanja' : (BuildContext context) => KeranjangBelanja(
+          onInit: () {
+            StoreProvider.of<AppState>(context).dispatch(getUserInformation);
+          },
+        ),
+        '/isi_alamat' : (BuildContext context) => AlamatForm(),
       },
       title: 'Tobasa E-Com Mantap!',
       theme: ThemeData(
