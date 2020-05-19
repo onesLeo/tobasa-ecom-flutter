@@ -52,8 +52,9 @@ class LoginExistingUserState extends State<LoginExistingUser>{
           suffixIcon: GestureDetector(
             child: Icon(_obsecureText ? Icons.visibility : Icons.visibility_off),
             onTap: () {
+              print('Tapped value ${_obsecureText}');
               setState(() {
-                _obsecureText != _obsecureText;
+                _obsecureText ? _obsecureText=false : _obsecureText=true;
               });
             },
           ),

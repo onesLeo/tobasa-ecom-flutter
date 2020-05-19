@@ -72,7 +72,7 @@ class RegistrasiState extends State<Registrasi>{
               child: Icon(_obsecureText ? Icons.visibility : Icons.visibility_off),
               onTap: () {
                 setState(() {
-                  _obsecureText != _obsecureText;
+                  _obsecureText ? _obsecureText=false : _obsecureText=true;
                 });
               },
             ),
