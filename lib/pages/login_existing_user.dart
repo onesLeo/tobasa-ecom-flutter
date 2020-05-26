@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,19 +76,19 @@ class LoginExistingUserState extends State<LoginExistingUser>{
           _isSubmitting == true ? CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor)
           ) : RaisedButton(
-            child: Text('Submit', style: Theme.of(context).textTheme.bodyText1,),
+            child: Text('Masuk', style: Theme.of(context).textTheme.bodyText1,),
             elevation: 8.0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))
             ),
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).accentColor,
             onPressed: _validateSubmit,
           ),
           FlatButton(
             child: Text(
                 'User Baru? Daftar disini!'
             ),
-            onPressed: () => Navigator.pushReplacementNamed(context, '/registrasi'),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/'),
           )
         ],
       ),
@@ -147,6 +148,9 @@ class LoginExistingUserState extends State<LoginExistingUser>{
   }
 
   void _authenticationUserUsingFirebase() async {
+    setState(() {
+      _isSubmitting = true;
+    });
     final FirebaseAuth _authentication = FirebaseAuth.instance;
     Future<AuthResult> _resultAuth = _authentication.signInWithEmailAndPassword(email: _emailVal, password: _passwordVal);
     _resultAuth.then((value)
@@ -155,12 +159,23 @@ class LoginExistingUserState extends State<LoginExistingUser>{
           value.user.getIdToken().then((value) => print('TOKEN VALUE ${value.token}'));
           _storeUserData(value.user);
           _showSuccessFulStatus();
+          setState(() {
+            _isSubmitting = false;
+          });
           _redirectUserToProductPage();
         },
         onError: (e){
+          setState(() {
+            _isSubmitting = false;
+          });
+      _showErrorResponse('Account or Password is invalid!');
       throw ' Error happened while login on method _authenticationUserUsingFirebase() > ${e}';
     }).catchError((e){
-      print('Error caught -> ${e.error}');
+      setState(() {
+        _isSubmitting = false;
+      });
+      _showErrorResponse('Email atau Password anda salah!');
+      print('Error caught -> ${e.message}');
     });
   }
 
@@ -181,7 +196,7 @@ class LoginExistingUserState extends State<LoginExistingUser>{
 
   void _redirectUserToProductPage(){
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, '/');
+      Navigator.pushReplacementNamed(context, '/homepage');
     });
   }
 
@@ -200,7 +215,7 @@ class LoginExistingUserState extends State<LoginExistingUser>{
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('TOBASA ECOMMERCE', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto', letterSpacing: 1.5, ),),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),

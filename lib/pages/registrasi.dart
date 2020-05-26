@@ -185,7 +185,11 @@ class RegistrasiState extends State<Registrasi>{
       });
       log.info('User ${_usernameVal} is successfully created');
     } ).catchError((onError){
-        log.info('Error Happened while trying to update profile ');
+        setState(() {
+          _isSubmitting=false;
+        });
+        _showErrorResponse('System mengalami gangguan ketika registrasi, coba beberapa saat lagi!');
+        log.info('Error Happened while trying to update profile -  ${onError} ');
     });
   }
 
@@ -221,7 +225,7 @@ class RegistrasiState extends State<Registrasi>{
 
   void _redirectUserToProductPage(){
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, '/');
+      Navigator.pushReplacementNamed(context, '/homepage');
     });
   }
 
@@ -240,7 +244,10 @@ class RegistrasiState extends State<Registrasi>{
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Pendaftaran'),
+        title: Text('TOBASA ECOMMERCE', style:
+        TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Roboto', letterSpacing: 1.5, color: Colors.grey[200],),
+        ),
+        backgroundColor: Colors.blueGrey,
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),

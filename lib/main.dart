@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/app_state.dart';
+import 'package:flutter_app/pages/address_list.dart';
+import 'package:flutter_app/pages/address_screen.dart';
 import 'package:flutter_app/pages/alamat_form.dart';
+import 'package:flutter_app/pages/home_page.dart';
 import 'package:flutter_app/pages/keranjang_belanja.dart';
 import 'package:flutter_app/pages/login_existing_user.dart';
 import 'package:flutter_app/pages/product_page.dart';
@@ -8,6 +11,7 @@ import 'package:flutter_app/pages/registrasi.dart';
 import 'package:flutter_app/redux/actions.dart';
 import 'package:flutter_app/redux/reducers.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:redux/redux.dart';
@@ -30,8 +34,18 @@ class MyApp extends StatelessWidget {
         store: store,
         child: MaterialApp(
       routes: {
-        '/login' : (BuildContext context) => LoginExistingUser(),
-        '/' : (BuildContext context) => ProductPage(
+        '/' : (BuildContext context) => LoginExistingUser(),
+        '/add_address' : (BuildContext context) => AddressScreen(),
+        '/manage_address' : (BuildContext context) => AddressListScreen(),
+//        '/product_page' : (BuildContext context) => ProductPage(
+//          onInit: () {
+//            StoreProvider.of<AppState>(context).dispatch(getUserAction);
+//            StoreProvider.of<AppState>(context).dispatch(getProdukActionFireStoreDB);
+//            StoreProvider.of<AppState>(context).dispatch(getKeranjangAction);
+//          },
+//        ),
+
+        '/homepage' : (BuildContext context) => HomePage(
           onInit: () {
             StoreProvider.of<AppState>(context).dispatch(getUserAction);
             StoreProvider.of<AppState>(context).dispatch(getProdukActionFireStoreDB);
@@ -58,8 +72,9 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         brightness: Brightness.dark,
-        primaryColor: Colors.cyan[400],
-        accentColor: Colors.lightBlue[100],
+        primarySwatch: Colors.red,
+        primaryColor: Hexcolor('#3C8CE7'),
+        accentColor: Hexcolor('#385e5f'),
         textTheme: TextTheme(
           headline5:  TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
           headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),

@@ -31,7 +31,7 @@ class ProdukItems extends StatelessWidget{
       GridTile(
       child: Hero(
         tag: item,
-        child: FadeInImage.memoryNetwork(placeholder: kTransparentImage, image: pictureUrl, fit: BoxFit.cover,)),
+          child: Image.network(pictureUrl, fit: BoxFit.cover,)),
       footer: GridTileBar(
         title: FittedBox(
           fit: BoxFit.scaleDown,
