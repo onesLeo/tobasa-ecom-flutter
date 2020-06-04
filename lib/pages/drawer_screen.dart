@@ -27,7 +27,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
             padding: EdgeInsets.all(30),
             decoration: BoxDecoration(
 //          color: Colors.white,
-                color: Hexcolor('#385e5f'),
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Hexcolor('#3C8CE7'), Colors.blue[800]],
+            ),
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

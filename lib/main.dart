@@ -71,10 +71,10 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        brightness: Brightness.dark,
-        primarySwatch: Colors.red,
         primaryColor: Hexcolor('#3C8CE7'),
         accentColor: Hexcolor('#385e5f'),
+        bottomSheetTheme: BottomSheetThemeData(
+            backgroundColor: Hexcolor('#eef4f8').withOpacity(0)),
         textTheme: TextTheme(
           headline5:  TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
           headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),

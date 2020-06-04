@@ -1,12 +1,10 @@
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/app_state.dart';
 import 'package:flutter_app/pages/produk_items.dart';
-import 'package:flutter_app/redux/actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:badges/badges.dart';
 
 class ProductPageWithDrawer extends StatefulWidget {
@@ -44,6 +42,11 @@ class ProductPageWithDrawerState extends State<ProductPageWithDrawer> {
 
     return AnimatedContainer(
       decoration: BoxDecoration(
+        gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Hexcolor('#eef4f8'), Hexcolor('#eef4f8')],
+            ),
           color: Colors.grey[200],
           borderRadius: BorderRadius.circular(isDrawerOpen ? 40 : 10.0)),
       duration: Duration(milliseconds: 250),
@@ -54,13 +57,24 @@ class ProductPageWithDrawerState extends State<ProductPageWithDrawer> {
         builder: (_, state) {
           return Column(
             children: <Widget>[
-              SizedBox(
-                height: 20,
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                IconButton(
-                  icon: (isDrawerOpen)
-                      ? IconButton(
+              Container(
+                height: 80,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft:  Radius.circular(10)),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Hexcolor('#3C8CE7'), Hexcolor('#045DE9')],
+                  )
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 25),
+                      child: IconButton(
+                        icon: (isDrawerOpen)
+                            ? IconButton(
                           icon: Icon(
                             Icons.arrow_back_ios,
                             color: Colors.grey[400],
@@ -72,31 +86,37 @@ class ProductPageWithDrawerState extends State<ProductPageWithDrawer> {
                             });
                           },
                         )
-                      : Icon(
+                            : Icon(
                           Icons.menu,
-                          color: Colors.grey[400],
+                          color: Colors.white70,
                         ),
-                  onPressed: () {
-                    setState(() {
-                      setValDrawerOpen(230.0, 150.0, 0.6);
-                      isDrawerOpen = true;
-                    });
-                  },
+                        onPressed: () {
+                          setState(() {
+                            setValDrawerOpen(230.0, 150.0, 0.6);
+                            isDrawerOpen = true;
+                          });
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 25),
+                      child: Badge(
+                        badgeContent: Text('${state.keranjangBelanja.length}',
+                            style: TextStyle(fontSize: 13.0)),
+                        animationType: BadgeAnimationType.fade,
+                        position: BadgePosition.topRight(top: 5, right: -5),
+                        badgeColor: Colors.deepPurple[500],
+                        child: IconButton(
+                            icon: Icon(Icons.store),
+                            color: Colors.white70,
+                            onPressed: () =>
+                                Navigator.pushNamed(context, '/keranjangbelanja')),
+                      ),
+                    ),
+                    SizedBox(width: 20,)
+                  ],
                 ),
-                Badge(
-                  badgeContent: Text('${state.keranjangBelanja.length}',
-                      style: TextStyle(fontSize: 13.0)),
-                  animationType: BadgeAnimationType.fade,
-                  position: BadgePosition.topRight(top: 5, right: -5),
-                  badgeColor: Colors.deepPurple[500],
-                  child: IconButton(
-                      icon: Icon(Icons.store),
-                      color: Colors.blueGrey,
-                      onPressed: () =>
-                          Navigator.pushNamed(context, '/keranjangbelanja')),
-                ),
-                SizedBox(width: 20,)
-              ]),
+              ),
               Expanded(
                 child: SafeArea(
                   top: false,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,11 @@ import 'package:flutter_app/models/UserEcom.dart';
 import 'package:flutter_app/models/app_state.dart';
 import 'package:flutter_app/models/produk.dart';
 import 'package:flutter_app/pages/produk_items.dart';
+import 'package:flutter_app/pages/summary_purchasing.dart';
+import 'package:flutter_counter/flutter_counter.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:logging/logging.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -72,7 +78,7 @@ class KeranjangBelanjaState extends State<KeranjangBelanja> {
             RaisedButton(
               elevation: 8.0,
               child: Text('Tambah Alamat'),
-              onPressed: ()=> Navigator.pushNamed(context, '/isi_alamat'),
+              onPressed: () => Navigator.pushNamed(context, '/isi_alamat'),
             ),
             Expanded(
                 child: Column(
@@ -94,27 +100,31 @@ class KeranjangBelanjaState extends State<KeranjangBelanja> {
                               title: Text(
                                 " ${alamat.alamat} \n ${alamat.kabupaten} \n ${alamat.kecamatan} \n ${alamat.kota} \n ${alamat.kode_pos}",
                               ),
-                                trailing: alamat.isPrimary ? Chip(
-                                  avatar: CircleAvatar(
-                                    backgroundColor: Colors.green,
-                                    child: Icon(Icons.check_circle, color: Colors.white,),
-                                  ),
-                                  label: Text('Alamat Utama'),
-                                ) :
-                                FlatButton(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0))),
-                                  child: Text(
-                                    'Pilih',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.deepOrange[200]),
-                                  ),
-                                  onPressed: () => print("Pressed"),
-                                ),
-                            ))).toList()
-                ),
+                              trailing: alamat.isPrimary
+                                  ? Chip(
+                                      avatar: CircleAvatar(
+                                        backgroundColor: Colors.green,
+                                        child: Icon(
+                                          Icons.check_circle,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      label: Text('Alamat Utama'),
+                                    )
+                                  : FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0))),
+                                      child: Text(
+                                        'Pilih',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.deepOrange[200]),
+                                      ),
+                                      onPressed: () => print("Pressed"),
+                                    ),
+                            )))
+                        .toList()),
               ],
             ))
           ],
@@ -123,20 +133,18 @@ class KeranjangBelanjaState extends State<KeranjangBelanja> {
     );
   }
 
-  Widget _tabHistoriBelanja(AppState state){
+  Widget _tabHistoriBelanja(AppState state) {
     InitializationDummyData initData = InitializationDummyData();
     CheckoutProduk checkoutProduk = initData.checkOutItemDummyData();
 
     return Expanded(
       child: Row(
-        children: <Widget>[
-
-        ],
+        children: <Widget>[],
       ),
     );
   }
 
-  Widget _tabHistoryBelanja(){
+  Widget _tabHistoryBelanja() {
     return Text('Test');
   }
 
@@ -146,49 +154,55 @@ class KeranjangBelanjaState extends State<KeranjangBelanja> {
 
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
-      builder: (_, state){
+      builder: (_, state) {
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
               child: ListView.separated(
-                  separatorBuilder: (BuildContext context, int index) => const Divider(),
-                scrollDirection: Axis.vertical,
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(),
+                  scrollDirection: Axis.vertical,
                   itemCount: checkoutProduk.produk_checkout.length,
                   itemBuilder: (context, index) {
                     return ListTile(
                       leading: Stack(
-                          children: <Widget>[
-                            Positioned(
-                              child: Image.network(
-                                '${checkoutProduk.produk_checkout[index].link_to_item}',
-                                height: 50.0,
-                              ),
-
-                            )
-                          ],
+                        children: <Widget>[
+                          Positioned(
+                            child: Image.network(
+                              '${checkoutProduk.produk_checkout[index].link_to_item}',
+                              height: 50.0,
+                            ),
+                          )
+                        ],
                       ),
                       title: Row(
                         children: <Widget>[
                           Expanded(
-                            child: Column(
-                              children: <Widget>[
-                                Align(child: Text('${checkoutProduk.produk_checkout[index].nama_produk}',
-                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20) , ),
-                                alignment: Alignment.centerLeft ,),
-                                Align(child:
-                                Text('${checkoutProduk.produk_checkout[index].harga_produk}',),
-                                alignment: Alignment.centerLeft,
+                              child: Column(
+                            children: <Widget>[
+                              Align(
+                                child: Text(
+                                  '${checkoutProduk.produk_checkout[index].nama_produk}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
                                 ),
-                              ],
-                            )
-                          )
+                                alignment: Alignment.centerLeft,
+                              ),
+                              Align(
+                                child: Text(
+                                  '${checkoutProduk.produk_checkout[index].harga_produk}',
+                                ),
+                                alignment: Alignment.centerLeft,
+                              ),
+                            ],
+                          ))
                         ],
                       ),
                     );
                   }),
             ),
-
           ],
         );
       },
@@ -211,10 +225,41 @@ class KeranjangBelanjaState extends State<KeranjangBelanja> {
     return totalBelanja.toString();
   }
 
-  _showDialogBottomSheetOfCheckout(context){
-      showModalBottomSheet(context: context, builder: (BuildContext ctx){
-          return Container();
-      });
+  _showDialogBottomSheetOfCheckout(BuildContext context, AppState state) {
+    num _counter = 0;
+    num _defaultValue = 0;
+
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext ctx) {
+          return Container(
+            color: Colors.transparent,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Hexcolor('#eef4f8').withOpacity(0.9),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(30)),
+              ),
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Center(
+                      child: Text('Ringkasan Pembelian!'),
+                    ),
+                    Divider(),
+                    Column(
+                      children: state.keranjangBelanja
+                          .map((e) => new SummaryPurchasing(item: e,))
+                          .toList(),
+                    ),
+                  ],
+                )
+              ),
+            ),
+          );
+        });
   }
 
   Future _checkOutDialog(AppState state) {
@@ -341,39 +386,57 @@ class KeranjangBelanjaState extends State<KeranjangBelanja> {
             length: 3,
             initialIndex: 0,
             child: Scaffold(
-              floatingActionButton: state.keranjangBelanja.length > 0
-                  ? FloatingActionButton(
-                      child: Icon(
-                        Icons.local_atm,
-                        size: 30.0,
-                      ),
+                floatingActionButton: state.keranjangBelanja.length > 0
+                    ? FloatingActionButton(
+                        child: Icon(
+                          Icons.local_atm,
+                          size: 30.0,
+                        ),
 //                      onPressed: () => _checkOutDialog(state),
-                      onPressed: ()=>_showDialogBottomSheetOfCheckout(context),
-                    )
-                  : Text(''),
-              appBar: AppBar(
-                title: Text(
-                  'Summary: item ${state.keranjangBelanja.length}, Total : ${_hitungTotalHarga(state.keranjangBelanja)}',
-                  style: TextStyle(fontSize: 15.0),
+                        onPressed: () =>
+                            _showDialogBottomSheetOfCheckout(context, state),
+                      )
+                    : Text(''),
+                appBar: GradientAppBar(
+                  elevation: 4,
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Hexcolor('#3C8CE7'), Hexcolor('#045DE9')],
+                  ),
+                  title: Text(
+                    'Summary: item ${state.keranjangBelanja.length}, Total : ${_hitungTotalHarga(state.keranjangBelanja)}',
+                    style: TextStyle(fontSize: 15.0),
+                  ),
+                  bottom: TabBar(
+                    labelColor: Colors.lightBlueAccent[500],
+                    unselectedLabelColor: Colors.lightBlueAccent[900],
+                    tabs: <Widget>[
+                      Tab(icon: Icon(Icons.shopping_cart)),
+                      Tab(icon: Icon(Icons.home)),
+                      Tab(icon: Icon(Icons.receipt)),
+                    ],
+                  ),
                 ),
-                bottom: TabBar(
-                  labelColor: Colors.lightBlueAccent[500],
-                  unselectedLabelColor: Colors.lightBlueAccent[900],
-                  tabs: <Widget>[
-                    Tab(icon: Icon(Icons.shopping_cart)),
-                    Tab(icon: Icon(Icons.home)),
-                    Tab(icon: Icon(Icons.receipt)),
+                body: Stack(
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [Colors.blue[50], Colors.grey[100]],
+                      )),
+                    ),
+                    TabBarView(
+                      children: <Widget>[
+                        _tabKeranjangBelanja(),
+                        _tabAlamatUsers(),
+                        _tabHistoriBelanjaNew(state),
+                      ],
+                    ),
                   ],
-                ),
-              ),
-              body: TabBarView(
-                children: <Widget>[
-                  _tabKeranjangBelanja(),
-                  _tabAlamatUsers(),
-                  _tabHistoriBelanjaNew(state),
-                ],
-              ),
-            ),
+                )),
           );
         });
   }
